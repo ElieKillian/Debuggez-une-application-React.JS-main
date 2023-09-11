@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+
 import Menu from "../../containers/Menu";
 import ServiceCard from "../../components/ServiceCard";
 import EventCard from "../../components/EventCard";
@@ -12,8 +14,22 @@ import Form from "../../containers/Form";
 import Modal from "../../containers/Modal";
 import { useData } from "../../contexts/DataContext";
 
+
 const Page = () => {
-  const {last} = useData()
+  const {data} = useData()  // remplacement de last par data
+  const [eventData, setEventData] = useState(null);
+  // utilisation d'usestate et utilisation d'useEffect pour faire attendre à l'élément le chargement des données
+  useEffect(() => {
+    if (data?.events.length > 0){
+      // comparaison des dates afin d'obtenir l'élément le plus récent
+      const sortEvents = data.events.sort((a, b) => new Date(b.date) - new Date(a.date));
+      const lastEvent = sortEvents[0];      
+      setTimeout(() => {
+        setEventData(lastEvent);
+      }, 1000);
+    }
+  }, [data]);
+
   return <>
     <header>
       <Menu />
@@ -116,13 +132,15 @@ const Page = () => {
     <footer className="row">
       <div className="col presta">
         <h3>Notre derniére prestation</h3>
+        {eventData ? (
         <EventCard
-          imageSrc={last?.cover}
-          title={last?.title}
-          date={new Date(last?.date)}
+          imageSrc={eventData.cover} // remplacement de last par eventData
+          title={eventData.title}
+          date={new Date(eventData.date)}
           small
           label="boom"
         />
+        ) : (null)}
       </div>
       <div className="col contact">
         <h3>Contactez-nous</h3>
