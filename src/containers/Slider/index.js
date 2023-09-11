@@ -21,7 +21,7 @@ const Slider = () => {
     nextCard();
   });
   return (
-    <div className="SlideCardList">
+    <div className="SlideCardList" key="list">
       {byDateDesc?.map((event, idx) => (
         <>
           <div
@@ -33,8 +33,8 @@ const Slider = () => {
             <img src={event.cover} alt="forum" />
             <div className="SlideCard__descriptionContainer">
               <div className="SlideCard__description">
-                <h3>{event.title}</h3>
-                <p>{event.description}</p>
+                <h3 key={event.title}>{event.title}</h3>
+                <p key={event.description}>{event.description}</p>
                 <div>{getMonth(new Date(event.date))}</div>
               </div>
             </div>
