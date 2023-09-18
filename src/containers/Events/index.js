@@ -20,12 +20,13 @@ const EventList = () => {
   ).filter((event, index) => {
     if (
       (currentPage - 1) * PER_PAGE <= index &&
-      PER_PAGE * currentPage > index
-    ) {
+      PER_PAGE * currentPage > index && (event.type === type || !type) // ajout d'une condition relative au type d'événement 
+    ){
       return true;
     }
     return false;
   });
+  // console.log("filteredEvents :", filteredEvents);
   const changeType = (evtType) => {
     setCurrentPage(1);
     setType(evtType);
